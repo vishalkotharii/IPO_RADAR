@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPO Radar — Research. Decide. Invest.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:       #0D0F14;
+  --ink-mid:   #2A2D35;
+  --ink-soft:  #4E5260;
+  --ink-mute:  #8B8FA8;
+  --paper:     #F7F6F2;
+  --paper-mid: #EEECEA;
+  --paper-low: #E4E2DD;
+  --accent:    #E8390E;
+  --accent-2:  #1246A8;
+  --gold:      #C98B1A;
+  --green:     #1A7A4A;
+  --red:       #C0262C;
+  --neutral:   #6B4F12;
+
+  --ff-head: 'Syne', sans-serif;
+  --ff-body: 'DM Sans', sans-serif;
+  --ff-mono: 'DM Mono', monospace;
+
+  --radius: 3px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Grain overlay ──────────────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  opacity: .4;
+}
+
+/* ── Topbar ─────────────────────────────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink);
+  border-bottom: 2px solid var(--accent);
+  padding: 0 clamp(16px, 4vw, 48px);
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-brand {
+  font-family: var(--ff-head);
+  font-weight: 800;
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: -.3px;
+  display: flex; align-items: center; gap: 10px;
+}
+.topbar-brand span {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.topbar-meta {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: .5px;
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+.hero {
+  background: var(--ink);
+  padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 48px) clamp(32px, 5vw, 56px);
+  position: relative; overflow: hidden;
+}
+.hero::after {
+  content: 'IPO';
+  position: absolute; right: -20px; top: -30px;
+  font-family: var(--ff-head);
+  font-size: clamp(120px, 20vw, 280px);
+  font-weight: 800;
+  color: rgba(255,255,255,.03);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.hero-label {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hero-title {
+  font-family: var(--ff-head);
+  font-size: clamp(28px, 5vw, 56px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -.5px;
+  max-width: 640px;
+  margin-bottom: 16px;
+}
+.hero-title em {
+  color: var(--accent);
+  font-style: normal;
+}
+.hero-sub {
+  color: var(--ink-mute);
+  font-size: 15px;
+  max-width: 480px;
+  font-weight: 300;
+}
+.hero-stats {
+  display: flex; gap: 32px; margin-top: 36px; flex-wrap: wrap;
+}
+.hero-stat { display: flex; flex-direction: column; gap: 2px; }
+.hero-stat-num {
+  font-family: var(--ff-head);
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+.hero-stat-lbl {
+  font-size: 11px;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Filter bar ─────────────────────────────────────────────────────────── */
+.filter-bar {
+  background: var(--paper-mid);
+  border-bottom: 1px solid var(--paper-low);
+  padding: 14px clamp(16px, 4vw, 48px);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  position: sticky; top: 56px; z-index: 90;
+}
+.filter-label {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+.filter-btn {
+  font-family: var(--ff-body);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border: 1.5px solid var(--paper-low);
+  background: var(--paper);
+  color: var(--ink-soft);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.filter-btn:hover { border-color: var(--ink-mid); color: var(--ink); }
+.filter-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.filter-search {
+  margin-left: auto;
+  font-family: var(--ff-body);
+  font-size: 13px;
+  padding: 5px 14px;
+  border: 1.5px solid var(--paper-low);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 20px;
+  outline: none;
+  width: 200px;
+  transition: border-color .15s;
+}
+.filter-search:focus { border-color: var(--accent); }
+.filter-search::placeholder { color: var(--ink-mute); }
+
+/* ── Main layout ────────────────────────────────────────────────────────── */
+.main {
+  padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 48px);
+  position: relative; z-index: 1;
+}
+
+/* ── IPO Grid ───────────────────────────────────────────────────────────── */
+.ipo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+/* ── IPO Card ───────────────────────────────────────────────────────────── */
+.ipo-card {
+  background: #fff;
+  border: 1px solid var(--paper-low);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  animation: fadeUp .4s ease both;
+}
+.ipo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--ink-mid);
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-top {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--paper-low);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+}
+.card-name {
+  font-family: var(--ff-head);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  flex: 1;
+}
+.card-sector {
+  font-size: 11px;
+  color: var(--ink-mute);
+  margin-top: 4px;
+  font-family: var(--ff-mono);
+  letter-spacing: .5px;
+}
+
+/* Verdict badge */
+.badge {
+  font-family: var(--ff-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-subscribe { background: #E8F5EE; color: var(--green); border: 1px solid #B8DEC8; }
+.badge-avoid     { background: #FEF0F0; color: var(--red);   border: 1px solid #F5C0C0; }
+.badge-neutral   { background: #FEF7E6; color: var(--neutral); border: 1px solid #E8D5A0; }
+
+/* Card stats row */
+.card-stats {
+  padding: 14px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.stat-item { display: flex; flex-direction: column; gap: 2px; }
+.stat-val {
+  font-family: var(--ff-head);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.stat-val.na { color: var(--ink-mute); font-size: 13px; }
+.stat-lbl {
+  font-size: 10px;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+/* Card footer */
+.card-footer {
+  margin-top: auto;
+  padding: 10px 20px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--paper-low);
+  background: var(--paper);
+}
+.status-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: var(--ff-mono);
+}
+.status-open    { background: #E8F5EE; color: var(--green); }
+.status-listed  { background: #EEF2FF; color: var(--accent-2); }
+.status-upcoming{ background: #FEF7E6; color: var(--neutral); }
+.status-rhpfiled{ background: #F3F3F3; color: var(--ink-soft); }
+.card-cta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: .3px;
+  display: flex; align-items: center; gap: 4px;
+}
+.card-cta::after { content: '→'; transition: transform .15s; }
+.ipo-card:hover .card-cta::after { transform: translateX(4px); }
+
+/* GMP tag */
+.gmp-tag {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.gmp-tag strong { color: var(--green); }
+.gmp-tag.neg strong { color: var(--red); }
+.gmp-tag.na strong { color: var(--ink-mute); }
+
+/* ── Empty / Loading states ─────────────────────────────────────────────── */
+.state-box {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--ink-mute);
+}
+.state-box .state-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+.state-box h3 { font-family: var(--ff-head); font-size: 20px; color: var(--ink-soft); margin-bottom: 8px; }
+.spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--paper-low);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Detail Modal ───────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(13,15,20,.7);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--paper);
+  width: 100%; max-width: 860px;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.25);
+  overflow: hidden;
+  transform: translateY(24px);
+  transition: transform .3s;
+  margin: auto;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+
+/* Modal header */
+.modal-hdr {
+  background: var(--ink);
+  padding: 28px 32px 24px;
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 20px; right: 24px;
+  background: rgba(255,255,255,.1);
+  border: none; color: #fff;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.modal-close:hover { background: rgba(255,255,255,.2); }
+.modal-sector-tag {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.modal-title {
+  font-family: var(--ff-head);
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  padding-right: 48px;
+}
+.modal-quick-stats {
+  display: flex; gap: 24px; flex-wrap: wrap; margin-top: 4px;
+}
+.mqs-item { display: flex; flex-direction: column; gap: 2px; }
+.mqs-val { font-family: var(--ff-head); font-size: 20px; font-weight: 700; color: #fff; }
+.mqs-lbl { font-size: 10px; color: rgba(255,255,255,.45); letter-spacing: 1px; text-transform: uppercase; }
+
+/* Modal body */
+.modal-body { padding: 28px 32px 36px; }
+.modal-section { margin-bottom: 32px; }
+.modal-section:last-child { margin-bottom: 0; }
+.section-hdr {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--paper-low);
+}
+.section-icon { font-size: 18px; }
+.section-title {
+  font-family: var(--ff-head);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink-mid);
+}
+.section-text {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+/* Strengths / Risks lists */
+.sr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .sr-grid { grid-template-columns: 1fr; } }
+.sr-box { background: var(--paper-mid); border-radius: 4px; padding: 16px; }
+.sr-box-title {
+  font-family: var(--ff-head);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.sr-box.strengths .sr-box-title { color: var(--green); }
+.sr-box.risks .sr-box-title { color: var(--red); }
+.sr-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.sr-list li {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  padding-left: 18px;
+  position: relative;
+}
+.sr-list li::before {
+  content: '';
+  position: absolute; left: 0; top: 7px;
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.sr-box.strengths .sr-list li::before { background: var(--green); }
+.sr-box.risks .sr-list li::before { background: var(--red); }
+.sr-list li strong { color: var(--ink); }
+
+/* Financials table */
+.fin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.fin-table th {
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--ff-head);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 12px;
+  text-align: right;
+}
+.fin-table th:first-child { text-align: left; }
+.fin-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--paper-low);
+  text-align: right;
+  color: var(--ink-soft);
+  font-family: var(--ff-mono);
+  font-size: 12px;
+}
+.fin-table td:first-child {
+  text-align: left;
+  font-family: var(--ff-body);
+  font-size: 13px;
+  color: var(--ink-mid);
+  font-weight: 500;
+}
+.fin-table tr:nth-child(even) td { background: var(--paper); }
+.fin-table tr.highlight td { background: #EEF6F1; }
+.fin-table tr.highlight td:first-child { color: var(--green); font-weight: 600; }
+.fin-table .neg { color: var(--red); }
+.fin-table .pos { color: var(--green); }
+
+/* Verdict box */
+.verdict-box {
+  border-radius: 4px;
+  padding: 20px 24px;
+  border-left: 4px solid;
+}
+.verdict-box.subscribe { background: #F0FAF4; border-color: var(--green); }
+.verdict-box.avoid     { background: #FEF5F5; border-color: var(--red); }
+.verdict-box.neutral   { background: #FFFBF0; border-color: var(--gold); }
+.verdict-label {
+  font-family: var(--ff-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.verdict-box.subscribe .verdict-label { color: var(--green); }
+.verdict-box.avoid .verdict-label { color: var(--red); }
+.verdict-box.neutral .verdict-label { color: var(--neutral); }
+.verdict-text { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
+
+/* Issue details grid */
+.issue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.issue-item {
+  background: var(--paper-mid);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+.issue-item-lbl { font-size: 10px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
+.issue-item-val { font-family: var(--ff-head); font-size: 15px; font-weight: 700; color: var(--ink); }
+
+/* Peer table */
+.peer-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.peer-table th {
+  background: var(--ink-mid);
+  color: #fff;
+  font-family: var(--ff-head);
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 8px 12px;
+  text-align: right;
+}
+.peer-table th:first-child { text-align: left; }
+.peer-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--paper-low);
+  text-align: right;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.peer-table td:first-child { text-align: left; font-family: var(--ff-body); font-size: 13px; color: var(--ink-mid); font-weight: 500; }
+.peer-table tr.this-ipo td { background: #FFF9E6; font-weight: 600; }
+.peer-table tr.this-ipo td:first-child { color: var(--neutral); }
+
+/* Config notice */
+.config-notice {
+  background: #FFF8E7;
+  border: 1px solid #E8D5A0;
+  border-radius: 6px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  font-size: 13px;
+  color: var(--neutral);
+  line-height: 1.7;
+}
+.config-notice strong { color: var(--ink); }
+.config-notice code {
+  background: #F0EAD6;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .modal-body { padding: 20px 18px 28px; }
+  .modal-hdr  { padding: 20px 18px; }
+  .modal-quick-stats { gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── CONFIG (edit these 3 lines) ──────────────────────────────────────── -->
+<script>
+  const CONFIG = {
+    // Step 1: Your Google Sheet ID (the long string in the URL)
+    // https://docs.google.com/spreadsheets/d/ >>> THIS PART <<< /edit
+    SHEET_ID: 'YOUR_SHEET_ID_HERE',
+
+    // Step 2: Your Google Sheets API Key (from Google Cloud Console)
+    API_KEY: 'YOUR_API_KEY_HERE',
+
+    // Step 3: The sheet tab name that has your Glide Feed data
+    SHEET_NAME: '📡 Glide Feed',
+
+    // Step 4: Row number in your sheet where the actual data starts (after headers)
+    DATA_START_ROW: 4,
+
+    // Your branding
+    SITE_NAME: 'IPO Radar',
+    TAGLINE:   'Research. Decide. Invest.',
+  };
+</script>
+
+<!-- ── Topbar ────────────────────────────────────────────────────────────── -->
+<nav class="topbar">
+  <div class="topbar-brand">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="10" stroke="#E8390E" stroke-width="2"/>
+      <path d="M7 14L10 9L13 12L16 7" stroke="#E8390E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    IPO Radar <span>BETA</span>
+  </div>
+  <div class="topbar-meta" id="last-updated">Loading...</div>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-label">India IPO Research</div>
+  <h1 class="hero-title">Know before<br>you <em>invest.</em></h1>
+  <p class="hero-sub">Independent research on active Indian IPOs. Financials, GMP, subscription data, and our verdict — all in one place.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num" id="stat-total">—</div><div class="hero-stat-lbl">IPOs Tracked</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="stat-open">—</div><div class="hero-stat-lbl">Currently Open</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="stat-subscribe">—</div><div class="hero-stat-lbl">Subscribe Calls</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="stat-upcoming">—</div><div class="hero-stat-lbl">Upcoming</div></div>
+  </div>
+</section>
+
+<!-- ── Filter bar ───────────────────────────────────────────────────────── -->
+<div class="filter-bar">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="open">Open Now</button>
+  <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+  <button class="filter-btn" data-filter="listed">Listed</button>
+  <button class="filter-btn" data-filter="subscribe">Subscribe</button>
+  <input class="filter-search" type="text" placeholder="Search company..." id="search-input">
+</div>
+
+<!-- ── Main content ─────────────────────────────────────────────────────── -->
+<main class="main">
+  <div id="config-notice" class="config-notice" style="display:none">
+    <strong>⚙️ Setup Required:</strong> Open <code>index.html</code> and fill in your
+    <code>SHEET_ID</code> and <code>API_KEY</code> in the CONFIG section at the top of the file.
+    See the setup guide below for step-by-step instructions.
+  </div>
+  <div class="ipo-grid" id="ipo-grid">
+    <div class="state-box">
+      <div class="spinner"></div>
+      <h3>Loading IPOs...</h3>
+      <p>Fetching latest data from Google Sheets</p>
+    </div>
+  </div>
+</main>
+
+<!-- ── Detail Modal ─────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hdr" id="modal-hdr"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── Column map (matches 📡 Glide Feed headers, 1-indexed) ──────────────────
+const COL = {
+  name:        0,   sector:     1,  exchange:   2,   issueType:  3,
+  pbLow:       4,   pbHigh:     5,  issueSize:  6,   fresh:      7,
+  ofs:         8,   lotSize:    9,  openDate:   10,  closeDate:  11,
+  allotDate:   12,  listDate:   13, listPrice:  14,  status:     15,
+  rec:         16,  gmp1:       17, gmp2:       18,  gmpClose:   19,
+  qib:         20,  hni:        21, rii:        22,  overall:    23,
+  published:   24,  snapshot:   25, strengths:  26,  risks:      27,
+  finComm:     28,  verdict:    29,
+  revFY23:     30,  revFY24:    31, revFY25:    32,  ebitdaFY25: 33,
+  ebitdaM:     34,  patFY23:    35, patFY24:    36,  patFY25:    37,
+  debt:        38,  de:         39, roe:        40,  roce:       41,
+  eps:         42,  cfo:        43, capex:      44,
+};
+
+let allIPOs = [];
+let activeFilter = 'all';
+let searchQuery  = '';
+
+// ── Fetch data from Google Sheets ──────────────────────────────────────────
+async function fetchData() {
+  if (CONFIG.SHEET_ID === 'YOUR_SHEET_ID_HERE' || CONFIG.API_KEY === 'YOUR_API_KEY_HERE') {
+    document.getElementById('config-notice').style.display = 'block';
+    renderDemoData();
+    return;
+  }
+
+  try {
+    const range = encodeURIComponent(`'${CONFIG.SHEET_NAME}'!A${CONFIG.DATA_START_ROW}:AV100`);
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${range}?key=${CONFIG.API_KEY}`;
+    const res  = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const rows = (json.values || []).filter(r => r[COL.published]?.toLowerCase() === 'yes');
+    allIPOs = rows;
+    renderAll();
+    updateStats();
+    updateTimestamp();
+  } catch (err) {
+    console.error(err);
+    showError(err.message);
+  }
+}
+
+// ── Demo data (shown when config not set) ─────────────────────────────────
+function renderDemoData() {
+  const demo = [
+    ['Clean Max Enviro Energy Solutions','Renewable Energy','BSE & NSE','FO+OFS','TBA','TBA','3100','1200','1900','TBA','TBA','TBA','TBA','TBA','TBA','RHP Filed','NEUTRAL','TBA','TBA','TBA','TBA','TBA','TBA','TBA','Yes',
+     'Clean Max Enviro Energy Solutions Limited is one of India\'s leading C&I renewable energy solution providers. Founded in 2010, they build, own, and operate solar and wind energy assets for large corporates through 15-25 year Power Purchase Agreements. As of H1 FY26, they had 1,800+ MW installed across India and UAE.',
+     '1. Long-term contracted revenue: 15-25 year PPAs with creditworthy corporates.\n2. Strong growth: Revenue CAGR ~27% (FY23-FY25).\n3. Expanding margins: EBITDA margins grew from 43.7% to 67.9%.\n4. International presence: Operations in UAE and other markets.\n5. First profitable year: PAT turned positive in FY25.',
+     '1. Very high debt: D/E ratio of 2.49x, total debt ₹7,974 Cr in FY25.\n2. Fragile profitability: PAT margin just 1.3% in FY25.\n3. Negative free cash flow: FCF -₹1,506 Cr in FY25.\n4. IPO proceeds: Entire Fresh Issue goes to debt repayment, not growth.\n5. Promoter exit: ₹1,900 Cr OFS means promoters are cashing out.',
+     'Revenue grew 27% CAGR to ₹1,496 Cr in FY25. EBITDA margins expanded dramatically from 43.7% to 67.9% as more plants came online. However, finance costs of ₹663 Cr consumed most of EBITDA, leaving just ₹19.4 Cr PAT — the first profitable year after losses in FY23 and FY24. CFO is strong at ₹1,404 Cr but capex of ₹2,911 Cr keeps free cash flow deeply negative, normal for an infrastructure company in active build-out.',
+     'NEUTRAL — Wait for price band. Strong business fundamentals but IPO structure is not retail-friendly. Entire Fresh Issue goes to debt repayment. Compare EV/EBITDA vs peers (NTPC Green ~35x, Greenko ~18x) once price band is announced. Watch QIB subscription on Day 1 before applying.',
+     '929.58','1389.84','1495.70','1015.07','67.9','-59.47','-37.64','19.43','7973.70','2.49','0.61','5.38','2.79','1404.20','2910.62'],
+  ];
+  allIPOs = demo;
+  renderAll();
+  updateStats();
+  document.getElementById('last-updated').textContent = 'DEMO MODE';
+}
+
+// ── Render helpers ─────────────────────────────────────────────────────────
+function v(row, col) { return (row[col] || '').toString().trim(); }
+function num(row, col) { const n = parseFloat(row[col]); return isNaN(n) ? null : n; }
+function fmt(n, dec=0) { if (n === null) return '—'; return n.toLocaleString('en-IN', {minimumFractionDigits: dec, maximumFractionDigits: dec}); }
+function fmtCr(n) { if (n === null) return '—'; return '₹' + fmt(n, 0) + ' Cr'; }
+
+function verdictClass(rec) {
+  const r = rec.toLowerCase();
+  if (r.includes('subscribe')) return 'subscribe';
+  if (r.includes('avoid'))     return 'avoid';
+  return 'neutral';
+}
+
+function statusClass(status) {
+  const s = status.toLowerCase();
+  if (s.includes('open'))     return 'status-open';
+  if (s.includes('listed'))   return 'status-listed';
+  if (s.includes('upcoming')) return 'status-upcoming';
+  return 'status-rhpfiled';
+}
+
+function parseList(text) {
+  return text.split('\n').filter(Boolean).map(line => {
+    // Remove leading "1. 2. 3." numbering
+    return line.replace(/^\d+\.\s*/, '').trim();
+  }).filter(Boolean);
+}
+
+// ── Build one card ─────────────────────────────────────────────────────────
+function buildCard(row, idx) {
+  const name     = v(row, COL.name);
+  const sector   = v(row, COL.sector);
+  const rec      = v(row, COL.rec)    || 'Neutral';
+  const status   = v(row, COL.status) || '—';
+  const issueSize= num(row, COL.issueSize);
+  const pbHigh   = v(row, COL.pbHigh);
+  const gmpClose = v(row, COL.gmpClose);
+  const overall  = v(row, COL.overall);
+  const vClass   = verdictClass(rec);
+
+  const gmpNum = parseFloat(gmpClose);
+  const gmpDisplay = isNaN(gmpNum) ? '—' : (gmpNum > 0 ? '+₹'+gmpNum : '₹'+gmpNum);
+  const gmpClass   = isNaN(gmpNum) ? 'na' : (gmpNum > 0 ? '' : 'neg');
+
+  const card = document.createElement('div');
+  card.className = 'ipo-card';
+  card.style.animationDelay = (idx * 0.05) + 's';
+  card.dataset.status = status.toLowerCase();
+  card.dataset.rec    = rec.toLowerCase();
+  card.dataset.name   = name.toLowerCase();
+  card.onclick = () => openModal(row);
+
+  card.innerHTML = `
+    <div class="card-top">
+      <div>
+        <div class="card-name">${name}</div>
+        <div class="card-sector">${sector}</div>
+      </div>
+      <div class="badge badge-${vClass}">${rec}</div>
+    </div>
+    <div class="card-stats">
+      <div class="stat-item">
+        <div class="stat-val">${issueSize ? '₹'+fmt(issueSize)+'Cr' : '—'}</div>
+        <div class="stat-lbl">Issue Size</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val ${pbHigh === 'TBA' ? 'na' : ''}">${pbHigh === 'TBA' ? 'TBA' : '₹'+pbHigh}</div>
+        <div class="stat-lbl">Price Band (High)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val ${overall === 'TBA' ? 'na' : ''}">${overall === 'TBA' ? '—' : overall+'x'}</div>
+        <div class="stat-lbl">Subscription</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="status-pill ${statusClass(status)}">${status}</span>
+      <span class="gmp-tag ${gmpClass}">GMP <strong>${gmpDisplay}</strong></span>
+      <span class="card-cta">Details</span>
+    </div>`;
+
+  return card;
+}
+
+// ── Render grid ─────────────────────────────────────────────────────────────
+function renderAll() {
+  const grid = document.getElementById('ipo-grid');
+  grid.innerHTML = '';
+
+  const filtered = allIPOs.filter(row => {
+    const s = row[COL.status]?.toLowerCase() || '';
+    const r = row[COL.rec]?.toLowerCase()    || '';
+    const n = row[COL.name]?.toLowerCase()   || '';
+
+    const matchFilter =
+      activeFilter === 'all'       ? true :
+      activeFilter === 'open'      ? s.includes('open') :
+      activeFilter === 'upcoming'  ? s.includes('upcoming') :
+      activeFilter === 'listed'    ? s.includes('listed') :
+      activeFilter === 'subscribe' ? r.includes('subscribe') : true;
+
+    const matchSearch = !searchQuery || n.includes(searchQuery.toLowerCase());
+    return matchFilter && matchSearch;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="state-box">
+      <span class="state-icon">🔍</span>
+      <h3>No IPOs found</h3>
+      <p>Try adjusting your filters or search query</p>
+    </div>`;
+    return;
+  }
+
+  filtered.forEach((row, i) => grid.appendChild(buildCard(row, i)));
+}
+
+// ── Stats ───────────────────────────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('stat-total').textContent     = allIPOs.length;
+  document.getElementById('stat-open').textContent      = allIPOs.filter(r => v(r,COL.status).toLowerCase().includes('open')).length;
+  document.getElementById('stat-subscribe').textContent = allIPOs.filter(r => v(r,COL.rec).toLowerCase().includes('subscribe')).length;
+  document.getElementById('stat-upcoming').textContent  = allIPOs.filter(r => v(r,COL.status).toLowerCase().includes('upcoming')).length;
+}
+
+function updateTimestamp() {
+  const now = new Date();
+  document.getElementById('last-updated').textContent =
+    'Updated ' + now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+}
+
+// ── Modal ───────────────────────────────────────────────────────────────────
+function openModal(row) {
+  const name      = v(row, COL.name);
+  const sector    = v(row, COL.sector);
+  const rec       = v(row, COL.rec) || 'Neutral';
+  const vClass    = verdictClass(rec);
+  const snapshot  = v(row, COL.snapshot);
+  const strengths = parseList(v(row, COL.strengths));
+  const risks     = parseList(v(row, COL.risks));
+  const finComm   = v(row, COL.finComm);
+  const verdict   = v(row, COL.verdict);
+
+  // Header
+  const pbLow  = v(row, COL.pbLow);
+  const pbHigh = v(row, COL.pbHigh);
+  const pb     = (pbLow === 'TBA' || pbHigh === 'TBA') ? 'TBA' : `₹${pbLow}–${pbHigh}`;
+
+  document.getElementById('modal-hdr').innerHTML = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-sector-tag">${sector}  ·  ${v(row, COL.exchange)}</div>
+    <div class="modal-title">${name}</div>
+    <div class="modal-quick-stats">
+      <div class="mqs-item"><div class="mqs-val">${pb}</div><div class="mqs-lbl">Price Band</div></div>
+      <div class="mqs-item"><div class="mqs-val">${fmtCr(num(row,COL.issueSize))}</div><div class="mqs-lbl">Issue Size</div></div>
+      <div class="mqs-item"><div class="mqs-val">${v(row,COL.status)}</div><div class="mqs-lbl">Status</div></div>
+      <div class="mqs-item"><div class="mqs-val" style="color:${vClass==='subscribe'?'#1A7A4A':vClass==='avoid'?'#C0262C':'#C98B1A'}">${rec}</div><div class="mqs-lbl">Verdict</div></div>
+    </div>`;
+
+  // Build body sections
+  let body = '';
+
+  // Issue details
+  body += `<div class="modal-section">
+    <div class="section-hdr"><span class="section-icon">📋</span><span class="section-title">Issue Details</span></div>
+    <div class="issue-grid">
+      ${issueItem('Fresh Issue',   fmtCr(num(row,COL.fresh)))}
+      ${issueItem('OFS',           fmtCr(num(row,COL.ofs)))}
+      ${issueItem('Lot Size',      v(row,COL.lotSize))}
+      ${issueItem('Open Date',     v(row,COL.openDate))}
+      ${issueItem('Close Date',    v(row,COL.closeDate))}
+      ${issueItem('Listing Date',  v(row,COL.listDate))}
+    </div>
+  </div>`;
+
+  // Snapshot
+  if (snapshot) {
+    body += `<div class="modal-section">
+      <div class="section-hdr"><span class="section-icon">🏢</span><span class="section-title">Company Snapshot</span></div>
+      <p class="section-text">${snapshot}</p>
+    </div>`;
+  }
+
+  // Strengths & Risks
+  if (strengths.length || risks.length) {
+    body += `<div class="modal-section">
+      <div class="section-hdr"><span class="section-icon">⚡</span><span class="section-title">Strengths & Risks</span></div>
+      <div class="sr-grid">
+        <div class="sr-box strengths">
+          <div class="sr-box-title">✅ Strengths</div>
+          <ul class="sr-list">${strengths.map(s => {
+            const [bold, ...rest] = s.split(':');
+            return rest.length ? `<li><strong>${bold}:</strong>${rest.join(':')}</li>` : `<li>${s}</li>`;
+          }).join('')}</ul>
+        </div>
+        <div class="sr-box risks">
+          <div class="sr-box-title">⚠️ Risks</div>
+          <ul class="sr-list">${risks.map(r => {
+            const [bold, ...rest] = r.split(':');
+            return rest.length ? `<li><strong>${bold}:</strong>${rest.join(':')}</li>` : `<li>${r}</li>`;
+          }).join('')}</ul>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Financials table + commentary
+  const revFY23 = num(row, COL.revFY23), revFY24 = num(row, COL.revFY24), revFY25 = num(row, COL.revFY25);
+  const patFY23 = num(row, COL.patFY23), patFY24 = num(row, COL.patFY24), patFY25 = num(row, COL.patFY25);
+  const ebitda  = num(row, COL.ebitdaFY25), ebitdaM = num(row, COL.ebitdaM);
+  const debt    = num(row, COL.debt), de = num(row, COL.de);
+  const eps     = num(row, COL.eps), roe = num(row, COL.roe);
+
+  body += `<div class="modal-section">
+    <div class="section-hdr"><span class="section-icon">📊</span><span class="section-title">Key Financials</span></div>
+    <table class="fin-table">
+      <thead><tr>
+        <th>Metric</th><th>FY23</th><th>FY24</th><th>FY25</th>
+      </tr></thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Revenue (₹ Cr)</td>
+          <td>${fmt(revFY23,0)}</td><td>${fmt(revFY24,0)}</td><td>${fmt(revFY25,0)}</td>
+        </tr>
+        <tr>
+          <td>EBITDA (₹ Cr) / Margin</td>
+          <td>—</td><td>—</td>
+          <td>${fmt(ebitda,0)} <span style="color:var(--ink-mute);font-size:11px">(${fmt(ebitdaM,1)}%)</span></td>
+        </tr>
+        <tr>
+          <td>PAT (₹ Cr)</td>
+          <td class="${patFY23 < 0 ? 'neg':''}">${fmt(patFY23,1)}</td>
+          <td class="${patFY24 < 0 ? 'neg':''}">${fmt(patFY24,1)}</td>
+          <td class="${patFY25 < 0 ? 'neg':'pos'}">${fmt(patFY25,1)}</td>
+        </tr>
+        <tr>
+          <td>Total Debt (₹ Cr) / D/E</td>
+          <td>—</td><td>—</td>
+          <td>${fmt(debt,0)} <span style="color:var(--ink-mute);font-size:11px">(${fmt(de,2)}x)</span></td>
+        </tr>
+        <tr>
+          <td>EPS (Diluted ₹) / RoE</td>
+          <td>—</td><td>—</td>
+          <td>₹${fmt(eps,2)} <span style="color:var(--ink-mute);font-size:11px">(RoE ${fmt(roe,1)}%)</span></td>
+        </tr>
+      </tbody>
+    </table>
+    ${finComm ? `<p class="section-text" style="margin-top:16px">${finComm}</p>` : ''}
+  </div>`;
+
+  // Verdict
+  if (verdict) {
+    body += `<div class="modal-section">
+      <div class="section-hdr"><span class="section-icon">⚖️</span><span class="section-title">Final Verdict</span></div>
+      <div class="verdict-box ${vClass}">
+        <div class="verdict-label">${rec}</div>
+        <div class="verdict-text">${verdict}</div>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function issueItem(label, val) {
+  return `<div class="issue-item">
+    <div class="issue-item-lbl">${label}</div>
+    <div class="issue-item-val">${val || '—'}</div>
+  </div>`;
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Esc key closes modal
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Filters ─────────────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    renderAll();
+  });
+});
+document.getElementById('search-input').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderAll();
+});
+
+function showError(msg) {
+  document.getElementById('ipo-grid').innerHTML = `<div class="state-box">
+    <span class="state-icon">⚠️</span>
+    <h3>Could not load data</h3>
+    <p style="font-family:var(--ff-mono);font-size:12px;color:var(--red)">${msg}</p>
+    <p style="margin-top:8px">Check your SHEET_ID and API_KEY in the config</p>
+  </div>`;
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+fetchData();
+</script>
+</body>
+</html>
