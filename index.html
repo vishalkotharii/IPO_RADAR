@@ -602,25 +602,15 @@ body::before {
 </head>
 <body>
 
-<!-- ── CONFIG (edit these 3 lines) ──────────────────────────────────────── -->
+<!-- ── CONFIG ──────────────────────────────────────────────────────────── -->
 <script>
   const CONFIG = {
-    // Step 1: Your Google Sheet ID (the long string in the URL)
-    // https://docs.google.com/spreadsheets/d/ >>> THIS PART <<< /edit
-    SHEET_ID:https://docs.google.com/spreadsheets/d/17b2CX7IcvzPJkQyQLpt5l1UunS1cClL5nPvf0OWu4jc/edit?usp=sharing',
-
-    // Step 2: Your Google Sheets API Key (from Google Cloud Console)
-    API_KEY:'AIzaSyBQrqJcm0fCtcG3lpU7cpmhrnTA0PCFlDU',
-
-    // Step 3: The sheet tab name that has your Glide Feed data
-    SHEET_NAME:📡 Glide Feed,
-
-    // Step 4: Row number in your sheet where the actual data starts (after headers)
+    SHEET_ID:       '17b2CX7IcvzPJkQyQLpt5l1UunS1cClL5nPvf0OWu4jc',
+    API_KEY:        'AIzaSyBQrqJcm0fCtcG3lpU7cpmhrnTA0PCFlDU',
+    SHEET_NAME:     '📡 Glide Feed',
     DATA_START_ROW: 4,
-
-    // Your branding
-    SITE_NAME: 'IPO Radar',
-    TAGLINE:   'Research. Decide. Invest.',
+    SITE_NAME:      'IPO Radar',
+    TAGLINE:        'Research. Decide. Invest.',
   };
 </script>
 
@@ -665,7 +655,6 @@ body::before {
   <div id="config-notice" class="config-notice" style="display:none">
     <strong>⚙️ Setup Required:</strong> Open <code>index.html</code> and fill in your
     <code>SHEET_ID</code> and <code>API_KEY</code> in the CONFIG section at the top of the file.
-    See the setup guide below for step-by-step instructions.
   </div>
   <div class="ipo-grid" id="ipo-grid">
     <div class="state-box">
@@ -685,7 +674,6 @@ body::before {
 </div>
 
 <script>
-// ── Column map (matches 📡 Glide Feed headers, 1-indexed) ──────────────────
 const COL = {
   name:        0,   sector:     1,  exchange:   2,   issueType:  3,
   pbLow:       4,   pbHigh:     5,  issueSize:  6,   fresh:      7,
@@ -705,9 +693,8 @@ let allIPOs = [];
 let activeFilter = 'all';
 let searchQuery  = '';
 
-// ── Fetch data from Google Sheets ──────────────────────────────────────────
 async function fetchData() {
-  if (CONFIG.SHEET_ID === '725765264' || CONFIG.API_KEY === 'AIzaSyBQrqJcm0fCtcG3lpU7cpmhrnTA0PCFlDU') {
+  if (CONFIG.SHEET_ID === 'YOUR_SHEET_ID_HERE' || CONFIG.API_KEY === 'YOUR_API_KEY_HERE') {
     document.getElementById('config-notice').style.display = 'block';
     renderDemoData();
     return;
@@ -730,15 +717,14 @@ async function fetchData() {
   }
 }
 
-// ── Demo data (shown when config not set) ─────────────────────────────────
 function renderDemoData() {
   const demo = [
     ['Clean Max Enviro Energy Solutions','Renewable Energy','BSE & NSE','FO+OFS','TBA','TBA','3100','1200','1900','TBA','TBA','TBA','TBA','TBA','TBA','RHP Filed','NEUTRAL','TBA','TBA','TBA','TBA','TBA','TBA','TBA','Yes',
-     'Clean Max Enviro Energy Solutions Limited is one of India\'s leading C&I renewable energy solution providers. Founded in 2010, they build, own, and operate solar and wind energy assets for large corporates through 15-25 year Power Purchase Agreements. As of H1 FY26, they had 1,800+ MW installed across India and UAE.',
-     '1. Long-term contracted revenue: 15-25 year PPAs with creditworthy corporates.\n2. Strong growth: Revenue CAGR ~27% (FY23-FY25).\n3. Expanding margins: EBITDA margins grew from 43.7% to 67.9%.\n4. International presence: Operations in UAE and other markets.\n5. First profitable year: PAT turned positive in FY25.',
-     '1. Very high debt: D/E ratio of 2.49x, total debt ₹7,974 Cr in FY25.\n2. Fragile profitability: PAT margin just 1.3% in FY25.\n3. Negative free cash flow: FCF -₹1,506 Cr in FY25.\n4. IPO proceeds: Entire Fresh Issue goes to debt repayment, not growth.\n5. Promoter exit: ₹1,900 Cr OFS means promoters are cashing out.',
-     'Revenue grew 27% CAGR to ₹1,496 Cr in FY25. EBITDA margins expanded dramatically from 43.7% to 67.9% as more plants came online. However, finance costs of ₹663 Cr consumed most of EBITDA, leaving just ₹19.4 Cr PAT — the first profitable year after losses in FY23 and FY24. CFO is strong at ₹1,404 Cr but capex of ₹2,911 Cr keeps free cash flow deeply negative, normal for an infrastructure company in active build-out.',
-     'NEUTRAL — Wait for price band. Strong business fundamentals but IPO structure is not retail-friendly. Entire Fresh Issue goes to debt repayment. Compare EV/EBITDA vs peers (NTPC Green ~35x, Greenko ~18x) once price band is announced. Watch QIB subscription on Day 1 before applying.',
+     'Clean Max Enviro Energy Solutions Limited is one of India\'s leading C&I renewable energy solution providers.',
+     '1. Long-term contracted revenue: 15-25 year PPAs with creditworthy corporates.\n2. Strong growth: Revenue CAGR ~27% (FY23-FY25).\n3. Expanding margins: EBITDA margins grew from 43.7% to 67.9%.',
+     '1. Very high debt: D/E ratio of 2.49x, total debt ₹7,974 Cr in FY25.\n2. Fragile profitability: PAT margin just 1.3% in FY25.\n3. Negative free cash flow: FCF -₹1,506 Cr in FY25.',
+     'Revenue grew 27% CAGR to ₹1,496 Cr in FY25.',
+     'NEUTRAL — Wait for price band.',
      '929.58','1389.84','1495.70','1015.07','67.9','-59.47','-37.64','19.43','7973.70','2.49','0.61','5.38','2.79','1404.20','2910.62'],
   ];
   allIPOs = demo;
@@ -747,7 +733,6 @@ function renderDemoData() {
   document.getElementById('last-updated').textContent = 'DEMO MODE';
 }
 
-// ── Render helpers ─────────────────────────────────────────────────────────
 function v(row, col) { return (row[col] || '').toString().trim(); }
 function num(row, col) { const n = parseFloat(row[col]); return isNaN(n) ? null : n; }
 function fmt(n, dec=0) { if (n === null) return '—'; return n.toLocaleString('en-IN', {minimumFractionDigits: dec, maximumFractionDigits: dec}); }
@@ -769,13 +754,9 @@ function statusClass(status) {
 }
 
 function parseList(text) {
-  return text.split('\n').filter(Boolean).map(line => {
-    // Remove leading "1. 2. 3." numbering
-    return line.replace(/^\d+\.\s*/, '').trim();
-  }).filter(Boolean);
+  return text.split('\n').filter(Boolean).map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(Boolean);
 }
 
-// ── Build one card ─────────────────────────────────────────────────────────
 function buildCard(row, idx) {
   const name     = v(row, COL.name);
   const sector   = v(row, COL.sector);
@@ -830,7 +811,6 @@ function buildCard(row, idx) {
   return card;
 }
 
-// ── Render grid ─────────────────────────────────────────────────────────────
 function renderAll() {
   const grid = document.getElementById('ipo-grid');
   grid.innerHTML = '';
@@ -863,7 +843,6 @@ function renderAll() {
   filtered.forEach((row, i) => grid.appendChild(buildCard(row, i)));
 }
 
-// ── Stats ───────────────────────────────────────────────────────────────────
 function updateStats() {
   document.getElementById('stat-total').textContent     = allIPOs.length;
   document.getElementById('stat-open').textContent      = allIPOs.filter(r => v(r,COL.status).toLowerCase().includes('open')).length;
@@ -877,7 +856,6 @@ function updateTimestamp() {
     'Updated ' + now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
 }
 
-// ── Modal ───────────────────────────────────────────────────────────────────
 function openModal(row) {
   const name      = v(row, COL.name);
   const sector    = v(row, COL.sector);
@@ -889,7 +867,6 @@ function openModal(row) {
   const finComm   = v(row, COL.finComm);
   const verdict   = v(row, COL.verdict);
 
-  // Header
   const pbLow  = v(row, COL.pbLow);
   const pbHigh = v(row, COL.pbHigh);
   const pb     = (pbLow === 'TBA' || pbHigh === 'TBA') ? 'TBA' : `₹${pbLow}–${pbHigh}`;
@@ -905,10 +882,8 @@ function openModal(row) {
       <div class="mqs-item"><div class="mqs-val" style="color:${vClass==='subscribe'?'#1A7A4A':vClass==='avoid'?'#C0262C':'#C98B1A'}">${rec}</div><div class="mqs-lbl">Verdict</div></div>
     </div>`;
 
-  // Build body sections
   let body = '';
 
-  // Issue details
   body += `<div class="modal-section">
     <div class="section-hdr"><span class="section-icon">📋</span><span class="section-title">Issue Details</span></div>
     <div class="issue-grid">
@@ -921,7 +896,6 @@ function openModal(row) {
     </div>
   </div>`;
 
-  // Snapshot
   if (snapshot) {
     body += `<div class="modal-section">
       <div class="section-hdr"><span class="section-icon">🏢</span><span class="section-title">Company Snapshot</span></div>
@@ -929,7 +903,6 @@ function openModal(row) {
     </div>`;
   }
 
-  // Strengths & Risks
   if (strengths.length || risks.length) {
     body += `<div class="modal-section">
       <div class="section-hdr"><span class="section-icon">⚡</span><span class="section-title">Strengths & Risks</span></div>
@@ -952,7 +925,6 @@ function openModal(row) {
     </div>`;
   }
 
-  // Financials table + commentary
   const revFY23 = num(row, COL.revFY23), revFY24 = num(row, COL.revFY24), revFY25 = num(row, COL.revFY25);
   const patFY23 = num(row, COL.patFY23), patFY24 = num(row, COL.patFY24), patFY25 = num(row, COL.patFY25);
   const ebitda  = num(row, COL.ebitdaFY25), ebitdaM = num(row, COL.ebitdaM);
@@ -996,7 +968,6 @@ function openModal(row) {
     ${finComm ? `<p class="section-text" style="margin-top:16px">${finComm}</p>` : ''}
   </div>`;
 
-  // Verdict
   if (verdict) {
     body += `<div class="modal-section">
       <div class="section-hdr"><span class="section-icon">⚖️</span><span class="section-title">Final Verdict</span></div>
@@ -1025,10 +996,8 @@ function closeModal(e) {
   document.body.style.overflow = '';
 }
 
-// Esc key closes modal
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ── Filters ─────────────────────────────────────────────────────────────────
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1037,6 +1006,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     renderAll();
   });
 });
+
 document.getElementById('search-input').addEventListener('input', e => {
   searchQuery = e.target.value;
   renderAll();
@@ -1051,7 +1021,6 @@ function showError(msg) {
   </div>`;
 }
 
-// ── Init ─────────────────────────────────────────────────────────────────────
 fetchData();
 </script>
 </body>
